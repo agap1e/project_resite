@@ -52,6 +52,7 @@ CREATE TABLE resits (
     subject_id BIGINT NOT NULL,
     teacher_id BIGINT NOT NULL,
     resit_date DATE NULL,
+    resit_link TEXT NULL,
     status VARCHAR(30) NOT NULL CHECK (
         status IN ('scheduled','completed','cancelled')
     ),
