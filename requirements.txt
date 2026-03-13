@@ -9,6 +9,7 @@ python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
 django
+django-cors-headers
 djangorestframework
 psycopg2-binary
 djangorestframework-simplejwt

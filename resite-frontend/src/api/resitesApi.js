@@ -1,33 +1,70 @@
-import { resites, semesters } from "../data/mockData";
+const API_BASE = "http://127.0.0.1:8000/api";
 
-function delay(ms = 300) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+function formatDate(dateString) {
+  if (!dateString) return "";
+  const [year, month, day] = dateString.split("-");
+  return `${day}.${month}.${year.slice(-2)}`;
+}
+
+function mapWorkType(workType) {
+  switch (workType) {
+    case "exam":
+      return "Экзамен";
+    case "credit":
+      return "Зачет";
+    case "course_project":
+      return "Курсач";
+    default:
+      return workType || "—";
+  }
+}
+
+function mapRetake(item) {
+  return {
+    id: item.id,
+    semester: "Не указан",
+    date: formatDate(item.retake_date),
+    time: item.retake_time ?? "",
+    discipline: item.subject?.name ?? "—",
+    type: mapWorkType(item.subject?.work_type),
+    groupsShort: "—",
+    groupsFull: [],
+    lecturer: item.lecturer ?? "—",
+    commission: item.commission ?? "—",
+    staff: [],
+    link: item.retake_link ?? "",
+    statementsCreated: false,
+  };
 }
 
 export async function getSemesters() {
-  await delay();
-  return semesters;
+  return ["Не указан"];
 }
 
 export async function getResites(semester = null) {
-  await delay();
+  const response = await fetch(`${API_BASE}/retakes/`);
 
-  if (!semester) {
-    return resites;
+  if (!response.ok) {
+    throw new Error("Не удалось загрузить пересдачи");
   }
 
-  return resites.filter((item) => item.semester === semester);
+  const data = await response.json();
+  const mapped = data.map(mapRetake);
+
+  if (!semester || semester === "Не указан") {
+    return mapped;
+  }
+
+  return mapped.filter((item) => item.semester === semester);
 }
 
 export async function getResiteById(id) {
-  await delay();
+  const response = await fetch(`${API_BASE}/retakes/${id}/`);
 
-  const numericId = Number(id);
-  const resite = resites.find((item) => item.id === numericId);
-
-  if (!resite) {
+  if (!response.ok) {
     throw new Error("Пересдача не найдена");
   }
 
-  return resite;
+  const data = await response.json();
+  return mapRetake(data);
 }

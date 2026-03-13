@@ -27,6 +27,9 @@ class RetakeListSerializer(serializers.ModelSerializer):
             "status",
             "created_at",
             "updated_at",
+            "retake_time",
+            "lecturer",
+            "commission",
         ]
 
 
@@ -40,6 +43,9 @@ class RetakeDetailSerializer(serializers.ModelSerializer):
             "subject",
             "retake_date",
             "retake_link",
+            "retake_time",
+            "lecturer",
+            "commission",
             "status",
             "created_at",
             "updated_at",
