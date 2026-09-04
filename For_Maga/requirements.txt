@@ -1,0 +1,15 @@
+numpy
+soundcard
+sherpa-onnx
+faster-whisper
+anthropic
+keyboard
+httpx[socks]
+mss
+Pillow
+opencv-python
+pypdf
+python-docx
+scikit-learn
+python-dotenv
+requests[socks]
